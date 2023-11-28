@@ -1,0 +1,44 @@
+version: '3'
+networks:
+  td.net:
+    driver: bridge
+services:
+
+  td:
+    image: 'canals/php:latest'
+    env_file: ./.env
+    ports:
+      - '7500:75'
+      - '1444'
+    volumes:
+
+      - ../doctrine/public:var/www/html
+      - ./doctrine:/var/www
+    working_dir: /var/www/
+    networks:
+      td.net:
+        aliases:
+          - td2.local
+    depends_on:
+      - td2.db
+
+  # service sql pour le stockage des commandes -
+  # utilisé par l'api order
+  td2.db:
+    image: 'postgres:latest'
+    command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
+    env_file: ./catalog.env
+    ports:
+      - '18252:80'
+    networks:
+      - td2.net
+    volumes:
+      - ./doctrine/sql:/var/sql
+
+
+  adminer:
+    image: adminer
+    ports:
+      - '8080:8080'
+    networks:
+      - td2.net
