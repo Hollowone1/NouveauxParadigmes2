@@ -1,22 +1,21 @@
 version: '3'
 networks:
-  td.net:
+  td2.net:
     driver: bridge
 services:
 
-  td:
+  td2:
     image: 'canals/php:latest'
     env_file: ./.env
     ports:
       - '7500:75'
       - '1444'
     volumes:
-
-      - ../doctrine/public:var/www/html
+      - ./doctrine/public:/var/www/html
       - ./doctrine:/var/www
     working_dir: /var/www/
     networks:
-      td.net:
+      td2.net:
         aliases:
           - td2.local
     depends_on:
