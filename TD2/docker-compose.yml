@@ -8,7 +8,7 @@ services:
     image: 'canals/php:latest'
     env_file: ./.env
     ports:
-      - '7500:75'
+      - '7500:80'
       - '1444'
     volumes:
       - ./doctrine/public:/var/www/html
