@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Entity]
 #[Table(name: "produit")]
 class Produit {
+
     #[Id]
     #[Column(type: Types::INTEGER)]
     #[GeneratedValue(strategy: "AUTO")]
@@ -34,20 +35,43 @@ class Produit {
     {
         return $this->id;
     }
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getNum(): string
+    {
+        return $this->numero;
+    }
+    public function setNum($num): void
+    {
+        $this->numero = $num;
+    }
     public function getLibelle(): string
     {
         return $this->libelle;
+    }
+    public function setLibelle($libelle): void
+    {
+        $this->libelle = $libelle;
     }
     public function getDesc(): string
     {
         return $this->description;
     }
-
+    public function setDesc($desc): void
+    {
+        $this->description = $desc;
+    }
     public function getImg(): string
     {
         return $this->image;
     }
-
+    public function setImg($img): void
+    {
+        $this->image = $img;
+    }
     #[ManyToOne(targetEntity: Categorie::class)]
     #[JoinColumn(name: "categorie_id", referencedColumnName: "id")]
     private ?Categorie $categorie = null;
@@ -55,5 +79,9 @@ class Produit {
     public function getCat(): string
     {
         return $this->categorie->getLibelle();
+    }
+    public function setCat($cat): void
+    {
+        $this->categorie = $cat;
     }
 }
