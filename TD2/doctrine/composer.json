@@ -10,7 +10,7 @@
   },
   "autoload": {
     "psr-4" : {
-      "catadoct\\catalog\\" : "./doctrine/src/"
+      "catadoct\\catalog\\" : "./src/"
     }
   }
 }
