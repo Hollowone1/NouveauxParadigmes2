@@ -14,9 +14,9 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\OneToMany;
 use PhpParser\Node\Expr\Array_;
+use catadoct\catalog\ProduitRepository;
 
-
-#[Entity]
+#[Entity(repositoryClass: ProduitRepository::class)]
 #[Table(name: "produit")]
 class Produit {
 

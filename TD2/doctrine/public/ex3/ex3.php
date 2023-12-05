@@ -15,3 +15,6 @@ $tarifRepository = $entityManager->getRepository(Tarif::class);
 $products = $catRepository->getProduitsbycategorie("Boissons");
 var_dump($products);
 
+$products = $productRepository->getProduitWithKeyword("Savoyarde");
+var_dump($products);
+

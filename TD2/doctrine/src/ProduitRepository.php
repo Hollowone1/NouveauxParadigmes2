@@ -6,13 +6,14 @@ use Doctrine\ORM\EntityRepository;
 
 class ProduitRepository extends EntityRepository
 {
-    public function getProduitsbycategorie(string $keyword): array
+    public function getProduitWithKeyword(string $keyword): array
     {
-        $dql = "SELECT p FROM \\catadoct\catalog\Produit p JOIN p.categorie c
-        WHERE c.libelle = :keyword";
+        $dql = "SELECT p FROM \\catadoct\catalog\Produit p
+        WHERE p.libelle LIKE :keyword
+        OR p.description LIKE :keyword";
 
         $query= $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('keyword', $keyword);
+        $query->setParameter('keyword', '%'.$keyword.'%');
         return $query->getResult();
     }
 
