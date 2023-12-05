@@ -23,10 +23,24 @@ class ProduitRepository extends EntityRepository
             $dql = "SELECT p FROM \\catadoct\\catalog\\Produit p
             JOIN p.tarifs t
             WHERE t.tarif < :keyword
-            ORDER BY t.tarif ASC";
+            ORDER BY p.numero ASC";
 
             $query = $this->getEntityManager()->createQuery($dql);
             $query->setParameter('keyword', $keyword);
+            return $query->getResult();
+    }
+
+    public function getProduitsBynumero(int $numero, string $taille): array
+    {
+            $dql = "SELECT p FROM \\catadoct\\catalog\\Produit p
+            JOIN p.tarifs t
+            JOIN t.taille ta
+            WHERE p.numero = :numero
+            OR p.libelle LIKE :taille";
+
+            $query = $this->getEntityManager()->createQuery($dql); 
+            $query->setParameter('numero',$numero);
+            $query->setParameter('taille', '%'.$taille.'%');
             return $query->getResult();
     }
 
