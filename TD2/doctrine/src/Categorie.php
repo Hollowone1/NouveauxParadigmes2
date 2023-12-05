@@ -48,4 +48,19 @@ class Categorie {
     {
         return $this->produits;
     }
+
+    public function getInfos(): array
+    {
+        $produits = [];
+        foreach ($this->produits as $produit) {
+            $produits[] = $produit->getInfos();
+        }
+        return [
+            "id" => $this->id,
+            "libelle" => $this->libelle,
+            "produits" => $produits
+        ];
+    }
+
+
 }

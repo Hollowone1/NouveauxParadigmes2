@@ -1,6 +1,8 @@
 <?php
 namespace catadoct\catalog;
 use catadoct\catalog\Categorie;
+use catadoct\catalog\Tarif;
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -9,6 +11,10 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\OneToMany;
+use PhpParser\Node\Expr\Array_;
+
 
 #[Entity]
 #[Table(name: "produit")]
@@ -75,7 +81,6 @@ class Produit {
     #[ManyToOne(targetEntity: Categorie::class)]
     #[JoinColumn(name: "categorie_id", referencedColumnName: "id")]
     private ?Categorie $categorie = null;
-
     public function getCat(): string
     {
         return $this->categorie->getLibelle();
@@ -84,4 +89,29 @@ class Produit {
     {
         $this->categorie = $cat;
     }
+    #[OneToMany(targetEntity: Tarif::class, mappedBy: "produit")]
+    private Collection $tarifs;
+
+    public function getTarifs(): array
+    {
+        $tarifs = [];
+        foreach ($this->tarifs as $tarif) {
+            $tarifs[] = $tarif->getInfos();
+        }
+        return $tarifs;
+    }
+
+    public function getInfos(): array
+    {
+        return [
+            "id" => $this->id,
+            "numero" => $this->numero,
+            "libelle" => $this->libelle,
+            "description" => $this->description,
+            "image" => $this->image,
+            "categorie" => $this->categorie->getLibelle(),
+            "tarifs" => $this->getTarifs()
+        ];
+    }
+
 }
