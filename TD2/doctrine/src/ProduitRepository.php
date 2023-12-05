@@ -17,4 +17,15 @@ class ProduitRepository extends EntityRepository
         return $query->getResult();
     }
 
+    
+    public function getProduitsbyasctarif(string $keyword): array
+    {
+        $dql = "SELECT p FROM \\catadoct\catalog\Produit p
+        WHERE p.tarifs < :keyword
+        ORDER BY p.tarifs ASC";
+
+        $query= $this->getEntityManager()->createQuery($dql);
+        $query->setParameter('keyword', '%'.$keyword.'%');
+        return $query->getResult();
+    }
 }
