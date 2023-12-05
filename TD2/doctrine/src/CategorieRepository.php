@@ -23,6 +23,5 @@ class CategorieRepository extends EntityRepository
         $query= $this->getEntityManager()->createQuery($dql);
         return $query->getResult();
     }
-    
 
 }

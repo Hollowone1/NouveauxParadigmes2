@@ -18,14 +18,16 @@ class ProduitRepository extends EntityRepository
     }
 
     
-    public function getProduitsbyasctarif(string $keyword): array
+    public function getProduitsByAsctarif(float $keyword): array
     {
-        $dql = "SELECT p FROM \\catadoct\catalog\Produit p
-        WHERE p.tarifs < :keyword
-        ORDER BY p.tarifs ASC";
+            $dql = "SELECT p FROM \\catadoct\\catalog\\Produit p
+            JOIN p.tarifs t
+            WHERE t.tarif < :keyword
+            ORDER BY t.tarif ASC";
 
-        $query= $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('keyword', '%'.$keyword.'%');
-        return $query->getResult();
+            $query = $this->getEntityManager()->createQuery($dql);
+            $query->setParameter('keyword', $keyword);
+            return $query->getResult();
     }
+
 }
