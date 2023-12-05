@@ -8,7 +8,7 @@ class ProduitRepository extends EntityRepository
 {
     public function getProduitWithKeyword(string $keyword): array
     {
-        $dql = "SELECT p.libelle, p.description FROM \\catadoct\catalog\Produit p
+        $dql = "SELECT p FROM \\catadoct\catalog\Produit p
         WHERE p.libelle LIKE :keyword
         OR p.description LIKE :keyword";
 
@@ -17,15 +17,17 @@ class ProduitRepository extends EntityRepository
         return $query->getResult();
     }
 
-    
-    public function getProduitsbyasctarif(string $keyword): array
-    {
-        $dql = "SELECT p FROM \\catadoct\catalog\Produit p
-        WHERE p.tarifs < :keyword
-        ORDER BY p.tarifs ASC";
 
-        $query= $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('keyword', '%'.$keyword.'%');
+    public function getProduitsByAsctarif(float $keyword): array
+    {
+        $dql = "SELECT p FROM \\catadoct\\catalog\\Produit p
+            JOIN p.tarifs t
+            WHERE t.tarif < :keyword
+            ORDER BY t.tarif ASC";
+
+        $query = $this->getEntityManager()->createQuery($dql);
+        $query->setParameter('keyword', $keyword);
         return $query->getResult();
     }
+
 }

@@ -17,6 +17,5 @@ var_dump($products);
 
 $products = $productRepository->getProduitWithKeyword("Reine");
 var_dump($products);
-
-$products = $productRepository->getProduitsbyasctarif("8.99");
+$products = $productRepository->getProduitsbyasctarif();
 var_dump($products);
