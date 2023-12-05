@@ -11,9 +11,11 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\Common\Collections\Collection;
 use catadoct\catalog\Produit;
+use catadoct\catalog\CategorieRepository;
 
 
-#[Entity]
+
+#[Entity(repositoryClass: CategorieRepository::class)]
 #[Table(name: "categorie")]
 class Categorie {
     #[Id]
