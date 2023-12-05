@@ -8,7 +8,7 @@ class ProduitRepository extends EntityRepository
 {
     public function getProduitWithKeyword(string $keyword): array
     {
-        $dql = "SELECT p FROM \\catadoct\catalog\Produit p
+        $dql = "SELECT p.libelle, p.description FROM \\catadoct\catalog\Produit p
         WHERE p.libelle LIKE :keyword
         OR p.description LIKE :keyword";
 

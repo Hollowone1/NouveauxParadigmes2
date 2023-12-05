@@ -8,7 +8,10 @@ class CategorieRepository extends EntityRepository
 {
     public function getProduitsbycategorie(string $keyword): array
     {
-        $dql = "SELECT p FROM \\catadoct\catalog\Produit p JOIN p.categorie c
+        $dql = "SELECT  p.libelle, p.description, t.tarif
+        FROM \\catadoct\catalog\Produit p 
+        JOIN p.categorie c
+        JOIN p.tarifs t
         WHERE c.libelle = :keyword";
 
         $query= $this->getEntityManager()->createQuery($dql);
@@ -23,6 +26,5 @@ class CategorieRepository extends EntityRepository
         $query= $this->getEntityManager()->createQuery($dql);
         return $query->getResult();
     }
-    
 
 }

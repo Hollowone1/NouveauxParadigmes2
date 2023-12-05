@@ -12,9 +12,11 @@ $catRepository = $entityManager->getRepository(Categorie::class);
 $tailleRepository = $entityManager->getRepository(Taille::class);
 $tarifRepository = $entityManager->getRepository(Tarif::class);
 
-$products = $catRepository->getProduitsbycategorie("Boissons");
+$products = $catRepository->getProduitsbycategorie("Salades");
 var_dump($products);
 
-$products = $productRepository->getProduitWithKeyword("Savoyarde");
+$products = $productRepository->getProduitWithKeyword("Reine");
 var_dump($products);
 
+$products = $productRepository->getProduitsbyasctarif("8.99");
+var_dump($products);

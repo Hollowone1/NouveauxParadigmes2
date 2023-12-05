@@ -21,7 +21,7 @@ class Tarif {
     #[GeneratedValue(strategy: "AUTO")]
     private int $id;
 
-    #[Column( type: Types::INTEGER)]
+    #[Column( type: Types::DECIMAL)]
     private string $tarif;
 
     #[ManyToOne(targetEntity: Taille::class)]
