@@ -18,3 +18,5 @@ var_dump($products);
 $products = $productRepository->getProduitWithKeyword("Savoyarde");
 var_dump($products);
 
+$products = $productRepository->getProduitsbyasctarif("8.99");
+var_dump($products);
