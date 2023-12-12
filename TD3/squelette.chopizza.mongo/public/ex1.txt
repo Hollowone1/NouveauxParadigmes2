@@ -1,0 +1,15 @@
+db.produits.find() -> tous les produits
+db.produits.count() -> compter les produits
+db.produits.find().sort({"numero" : -1}) -> trier selon le numéro ds ordre décroissant
+db.produits.findOne({"libelle" : "Margherita"}) -> le produit de libellé Margherita
+db.produits.find({"categorie" : "Boissons"}) -> produits de la catégorie boissons
+db.produits.find({}, {"categorie" : true, "numero" : true, "libelle" : true}) -> tous les produits mais que la catégorie, le numéro et le libellé
+db.produits.find({}, {"categorie" : true, "numero" : true, "libelle" : true, "tarifs.taille" : true, "tarifs.tarif": true }) -> mm chose mais avec les tarifs et les tailles
+db.produits.find({"tarifs.tarif" : { $lt : 8.0  }}) -> produits dont le tarif <8.0
+db.produits.find({"tarifs.tarif" : { $lt : 8.0  }, "tarifs.taille" : 'grande' }) -> dont taille grande est <8.0
+db.produits.insertOne({"categorie" : 'Boissons', "libelle" : "Fanta"}) -> insérer
+
+var produit = db.produits.findOne({ numero: 1 });
+var recettesIds = produit.recettes;
+db.recettes.find({ _id: { $in: recettesIds } });
+-> toutes les recettes du produit 1
