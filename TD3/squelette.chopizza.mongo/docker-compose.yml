@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  td3:
+    image: 'canals/php:latest'
+    #env_file: ./.env
+    ports:
+      - '80:80'
+      #- '1444'
+    volumes:
+      - ./public:/var/www/html
+      - ./src:/var/www/src
+#    working_dir: /var/www/
+#    networks:
+#      td2.net:
+#        aliases:
+#          - td2.local
+    depends_on:
+      - mongo
+
+  # service sql pour le stockage des commandes -
+  # utilisé par l'api order
+  mongo:
+    image: 'mongo:latest'
+    #env_file: ./catalog.env
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/var/data
