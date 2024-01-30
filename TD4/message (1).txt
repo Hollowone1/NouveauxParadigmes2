@@ -1,0 +1,325 @@
+1. Requêtes Query
+   1. liste des produits en précisant : id, libellé, description
+   query Produit {
+       produit {
+           id
+           libelle
+           description
+       }
+   }
+
+   2. Idem, en ajoutant le libellé de la catégorie du produit
+   query Produit {
+       produit {
+           id
+           libelle
+           description
+           categorie_id {
+               libelle
+           }
+       }
+   }
+
+   3. Idem, en ajoutant un filtre pour sélectionner le produit dont le libellé est égal à « Reine » (ou
+   une valeur de votre jeu de données)
+   query Produit {
+       produit(filter: { libelle: { _eq: "pizza 4from" } }) {
+           id
+           libelle
+           description
+           categorie_id {
+               libelle
+           }
+       }
+   }
+
+   4. Idem, en ajoutant les tailles et tarifs du produit dans le résultat,
+   query Produit {
+       produit {
+           id
+           libelle
+           description
+           categorie_id {
+               libelle
+           }
+           tarifs {
+               tarif
+               taille_id {
+                   libelle
+               }
+           }
+       }
+   }
+
+   5. Idem, mais avec un filtre sur la description contenant un mot clé (à choisir, par exemple
+   « mozzarella »)
+   query Produit {
+       produit(filter: { description: { _contains: "fromage" } }) {
+           id
+           libelle
+           description
+           categorie_id {
+               libelle
+           }
+           tarifs {
+               tarif
+               taille_id {
+                   libelle
+               }
+           }
+       }
+   }
+
+
+   6. lister les produits de la catégorie dont le libellé est égal à « Pizzas ». Ajouter le tarif et la
+   taille.
+   query Categorie {
+       categorie(filter: { libelle: { _eq: "pizza" } }) {
+           produits {
+               libelle
+               tarifs {
+                   tarif
+                   taille_id {
+                       libelle
+                   }
+               }
+           }
+       }
+   }
+
+   7. Requête retournant une liste de produits de la catégorie « pizzas » et une liste de produits de
+   la catégorie « boissons » ; utiliser des alias ; inclure le tarif pour les différentes tailles du
+   produit.
+   query Produit {
+       pizzas : produit(filter: { categorie_id: { libelle: { _eq: "pizza" } } }) {
+           libelle
+           description
+       }
+       boissons : produit(filter: { categorie_id: { libelle: { _eq: "boisson" } } }) {
+           libelle
+           description
+       }
+   }
+
+
+   8. Transformer la requête précédente de façon à utiliser un fragment correspondant aux champs
+   du résultat.
+   query Produit {
+       pizzas : produit(filter: { categorie_id: { libelle: { _eq: "pizza" } } }) {
+           ...champsProduit
+       }
+       boissons : produit(filter: { categorie_id: { libelle: { _eq: "boisson" } } }) {
+           ...champsProduit
+       }
+   }
+
+   fragment champsProduit on produit {
+           libelle
+           description
+   }
+
+   9. Transformer la requête 5 pour utiliser une variable de façon à paramétrer la requête par le
+   libellé de la catégorie souhaitée.
+   query Produit($libelle: String) {
+       produit(filter: { categorie_id: { libelle: { _eq: $libelle } } }) {
+           id
+           libelle
+           description
+           categorie_id {
+               libelle
+           }
+           tarifs {
+               tarif
+               taille_id {
+                   libelle
+               }
+           }
+       }
+   }
+
+   {
+       "libelle" : "boisson"
+   }
+
+   10. Liste des points de vente, en indiquant leur nom, adresse et localisation.
+   query PtVente {
+       ptVente {
+           nom
+           adresse
+       }
+   }
+
+
+   11. Ajouter la liste des produits disponibles dans le point de vente en indiquant leur numéro et
+   libellé, ainsi que le libellé de leur catégorie.
+   query PtVente {
+       ptVente {
+           nom
+           adresse
+           produits {
+               produit_id {
+                   libelle
+                   id
+                   categorie_id {
+                       libelle
+                   }
+               }
+           }
+       }
+   }
+
+   12. Idem, en triant par catégorie
+
+
+ex2 :
+requetes graphQL
+
+Utilisateur 1 :
+voir ds directus, user, et admni options pr co le token statique
+token statique : http://localhost:8055/graphql?access_token=rc2J12WhNFh9O6Sbpybv2kIq2rEeOePG
++ query normale, comme ds l'ex1
+
+Utilisateur 2 :
+token JWT : http://localhost:8055/graphql/system
++ query :
+    mutation {
+    	auth_login(email: "utilisateur2@mail.fr", password: "utilisateur2@mail.fr") {
+    		access_token
+    		refresh_token
+    	}
+    }
+ => rend un access et refresh token
+
+ Pour faire query comme ex1, faire requete sur  http://localhost:8055/graphql?access_token=<access_token>
+
+
+
+3. Mutations GraphQL
+Ecrire les mutations de la liste suivante. Penser à donner les droits nécessaires au rôle créé dans la
+question précédente.
+    1. Créer la catégorie « tacos »
+    mutation Create_categorie_item {
+        create_categorie_item(data: {
+            libelle : "tacos"
+        }) {
+            id
+            libelle
+        }
+    }
+
+    2. créer un produit : numéro, libellé, description
+    mutation Create_produit_item {
+        create_produit_item(data: {
+            libelle : "tacos sauce from"
+            description : "un tacos avec la sauce fromagère"
+        }) {
+            id
+            libelle
+            description
+        }
+    }
+
+    3. modifier le produit pour le rattacher à la catégorie « tacos »
+    mutation Update_produit_item {
+        update_produit_item(id: "9", data: {
+            categorie_id : {
+                id : "6"
+            }
+        }) {
+            id
+            libelle
+            description
+            categorie_id {
+                id
+                libelle
+            }
+        }
+    }
+
+
+
+    4. créer un produit en le rattachant à la catégorie tacos
+            mutation Create_produit_item {
+                create_produit_item(data: {
+                    libelle : "tacos3v"
+                    description : "un tacos avec 3 viandes"
+                    categorie_id : {
+                        id : "6"
+                    }
+                }) {
+                    id
+                    libelle
+                    description
+                    categorie_id {
+                        id
+                        libelle
+                    }
+                }
+            }
+
+    5. créer un produit et créer en même temps sa catégorie « wrap »
+    mutation Create_produit_item {
+                    create_produit_item(data: {
+                        libelle : "twrap chèvre"
+                        description : "un wrap avec du from de chèvre"
+                        categorie_id : {
+                            libelle : "wrap"
+                        }
+                    }) {
+                        id
+                        libelle
+                        description
+                        categorie_id {
+                            id
+                            libelle
+                        }
+                    }
+                }
+
+    6. ajouter un produit à la catégorie « wrap »
+    mutation Create_produit_item {
+        create_produit_item(data: {
+            libelle : "wrap légumes"
+            description : "un wrap avec légumes dedans"
+            categorie_id : {
+                id : "11"
+            }
+        }) {
+            id
+            libelle
+            description
+            categorie_id {
+                id
+                libelle
+            }
+        }
+    }
+
+    7. modifier ces produits pour les rattacher à plusieurs points de vente
+    mutation Update_produit_item {
+        update_produit_item(id: "10", data: {
+            ptVente_id: {
+                ptVente_id: {
+                    id: "1"
+                    }
+                }
+            })
+        {
+            id
+            libelle
+            description
+            ptVente_id {
+                ptVente_id {
+                    nom
+                    adresse
+                    id
+                }
+            }
+        }
+    }
+
+    8. définir les tarifs pour le premier produit créé : un tarif pour chaque taille,
+    9. modifier le tarif pour une des tailles,
+    10. supprimer les autres produits.
+
+

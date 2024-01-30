@@ -5,7 +5,7 @@ services:
     # Required when running on platform other than amd64, like Apple M1/M2:
     platform: linux/amd64
     ports:
-      - 5432:5432
+      - 5433:5432
     volumes:
       - ./data/database:/var/lib/postgresql/data
     environment:
