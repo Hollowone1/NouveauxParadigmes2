@@ -15,6 +15,54 @@ echo "connected to mongo <br>";
 
 $db = $c->chopizza;
 
+//ex1 1
+$db.chopizza.find({},{numero: 1, categorie: 1, libelle: 1, _id: 0});
+
+//Ex1 2
+
+$db.chopizza.count();
+
+//ex1 3
+
+$db.chopizza.find().sort({ numero: -1 });
+
+//ex1 4
+
+$db.chopizza.findOne({ libelle: "Margherita" });
+
+//Ex1 5
+
+$db.chopizza.findOne({categorie:"Boissons"})
+
+//ex1 6
+
+$db.chopizza.find({}, { categorie: 1, numero: 1, libelle: 1, _id: 0 });
+
+//ex1 7
+
+$db.chopizza.find({}, { categorie: 1, numero: 1, libelle: 1, _id: 0,tarif:1, taille:1 });
+
+//ex1 8
+
+$db.chopizza.find({ tarif: { $lt: 8.0 } });
+
+//ex1 9
+
+$db.chopizza.find({ tarif: "grandeTaille" { $lt: 8.0 } });
+
+//ex1 10
+
+$db.chopizza.insertOne({
+    numero: "que des numeros 10 dans ma team",
+    categorie: "Boissons",
+    libelle: "1",
+    tarif: 10.0 
+});
+
+//Ex 1 11
+
+$db.chopizza.find({ produit_id: 1 });
+
 //ex2 1
 $prod = $db->produits->find( [],
        ['projection'=>
